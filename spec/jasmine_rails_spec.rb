@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'net/http'
+require 'timeout'
 
 if Jasmine::Dependencies.rails_available?
   describe 'A Rails app' do
@@ -79,10 +80,12 @@ if Jasmine::Dependencies.rails_available?
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
         ensure
           Process.kill(:SIGINT, pid)
-          # begin
-            # Process.waitpid pid
-          # rescue Errno::ECHILD
-          # end
+          begin
+            Timeout::timeout(1) do
+              Process.waitpid pid
+            end
+          rescue Errno::ECHILD, Timeout::Error
+          end
         end
       end
     end
