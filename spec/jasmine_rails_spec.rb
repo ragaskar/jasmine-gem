@@ -74,18 +74,23 @@ if Jasmine::Dependencies.rails_available?
         begin
           pid = Process.spawn "bundle exec rake jasmine"
           Jasmine::wait_for_listener(8888, 'jasmine server')
+          p "server is up"
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
+          p "got it"
           output.should match(%r{script src.*/assets/jasmine_examples/Player.js})
           output.should match(%r{script src.*/assets/jasmine_examples/Song.js})
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
         ensure
           Process.kill(:SIGINT, pid)
-          begin
-            Timeout::timeout(1) do
-              Process.waitpid pid
-            end
-          rescue Errno::ECHILD, Timeout::Error
-          end
+          p "killed"
+          sleep(5)
+          p "Jasmine is listennnning : #{Jasmine.server_is_listening_on('localhost', 8888)}"
+          # begin
+            # Timeout::timeout(1) do
+              # Process.waitpid pid
+            # end
+          # rescue Errno::ECHILD, Timeout::Error
+          # end
         end
       end
     end
