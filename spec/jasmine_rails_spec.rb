@@ -70,20 +70,20 @@ if Jasmine::Dependencies.rails_available?
       }
 
       Bundler.with_clean_env do
-        begin
+        # begin
           pid = Process.spawn "bundle exec rake jasmine"
           Jasmine::wait_for_listener(8888, 'jasmine server')
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
           output.should match(%r{script src.*/assets/jasmine_examples/Player.js})
           output.should match(%r{script src.*/assets/jasmine_examples/Song.js})
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
-        ensure
-          Process.kill(:SIGINT, pid)
-          begin
-            Process.waitpid pid
-          rescue Errno::ECHILD
-          end
-        end
+        # ensure
+          # Process.kill(:SIGINT, pid)
+          # begin
+            # Process.waitpid pid
+          # rescue Errno::ECHILD
+          # end
+        # end
       end
     end
   end
