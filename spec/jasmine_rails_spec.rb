@@ -81,6 +81,7 @@ if Jasmine::Dependencies.rails_available?
           output.should match(%r{script src.*/assets/jasmine_examples/Song.js})
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
         ensure
+          p pid
           Process.kill(:SIGKILL, pid)
           p "killed"
           sleep(5)
