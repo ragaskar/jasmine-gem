@@ -83,8 +83,15 @@ if Jasmine::Dependencies.rails_available?
         ensure
           p pid
           # Process.kill(:SIGKILL, pid)
+          p 'beffoooooree ---'
+          puts `ps aux | grep #{pid}`
+          p 'just pid ----'
+          puts `ps aux | grep jasmine`
           p `kill -9 #{pid}`
-          p `ps aux | grep jasmine`
+          p 'after ---'
+          puts `ps aux | grep jasmine`
+          p 'just pid ----'
+          puts `ps aux | grep #{pid}`
           p "killed"
           sleep(5)
           p "Jasmine is listennnning : #{Jasmine.server_is_listening_on('localhost', 8888)}"
