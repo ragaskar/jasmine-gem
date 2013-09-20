@@ -82,12 +82,12 @@ if Jasmine::Dependencies.rails_available?
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
         ensure
           p pid
-          # Process.kill(:SIGKILL, pid)
           p 'beffoooooree ---'
           puts `ps -ef | grep #{pid}`
           p 'just pid ----'
           puts `ps -ef | grep jasmine`
-          p `kill -9 #{pid}`
+          # p `kill -9 #{pid}`
+          Process.kill(:SIGKILL, pid)
           p 'after ---'
           puts `ps -ef | grep jasmine`
           p 'just pid ----'
@@ -95,12 +95,10 @@ if Jasmine::Dependencies.rails_available?
           p "killed"
           sleep(5)
           p "Jasmine is listennnning : #{Jasmine.server_is_listening_on('localhost', 8888)}"
-          # begin
-            # Timeout::timeout(1) do
-              # Process.waitpid pid
-            # end
-          # rescue Errno::ECHILD, Timeout::Error
-          # end
+          begin
+            Process.waitpid pid
+          rescue Errno::ECHILD
+          end
         end
       end
     end
