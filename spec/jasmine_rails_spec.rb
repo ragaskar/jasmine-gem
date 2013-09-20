@@ -82,7 +82,8 @@ if Jasmine::Dependencies.rails_available?
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
         ensure
           p pid
-          Process.kill(:SIGKILL, pid)
+          # Process.kill(:SIGKILL, pid)
+          `kill -9 #{pid}`
           p "killed"
           sleep(5)
           p "Jasmine is listennnning : #{Jasmine.server_is_listening_on('localhost', 8888)}"
